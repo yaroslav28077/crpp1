@@ -1,0 +1,157 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Для локальної розробки: запустіть `npx decap-server` і розкоментуйте рядок нижче
+# local_backend: true
+
+locale: uk
+
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+collections:
+  # ─────────────── НОВИНИ ───────────────
+  - name: news
+    label: Новини
+    label_singular: Новина
+    folder: content/news
+    create: true
+    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+    sortable_fields: [date, title]
+    view_filters:
+      - label: 'За поточний рік'
+        field: date
+        pattern: '2026'
+    fields:
+      - { name: title, label: Заголовок, widget: string }
+      - { name: date, label: Дата публікації, widget: datetime }
+      - { name: description, label: Короткий опис (для картки та SEO), widget: text, required: false }
+      - { name: cover, label: Головне зображення, widget: image, required: false }
+      - name: tags
+        label: Теги
+        widget: list
+        required: false
+        field: { name: tag, label: Тег, widget: string }
+      - name: gallery
+        label: Фотогалерея
+        widget: list
+        required: false
+        summary: '{{fields.caption}}'
+        fields:
+          - { name: image, label: Зображення, widget: image }
+          - { name: caption, label: Підпис, widget: string, required: false }
+      - name: attachments
+        label: Прикріплені файли
+        widget: list
+        required: false
+        summary: '{{fields.label}}'
+        fields:
+          - { name: label, label: Назва файлу для відображення, widget: string }
+          - { name: file, label: Файл (PDF, DOCX тощо), widget: file, media_folder: /public/documents, public_folder: /documents }
+      - { name: seo_title, label: 'SEO: заголовок сторінки', widget: string, required: false, hint: 'Якщо порожньо — використовується звичайний заголовок' }
+      - { name: seo_description, label: 'SEO: опис сторінки', widget: text, required: false }
+      - { name: body, label: Текст новини, widget: markdown }
+
+  # ─────────────── СТОРІНКИ ───────────────
+  - name: pages
+    label: Сторінки
+    label_singular: Сторінка
+    folder: content/pages
+    create: true
+    slug: '{{slug}}'
+    identifier_field: title
+    sortable_fields: [title, section]
+    fields:
+      - { name: title, label: Назва сторінки, widget: string }
+      - { name: slug, label: 'Адреса сторінки (латиницею, без пробілів)', widget: string, hint: 'Наприклад: atestatsiia — сторінка буде доступна за адресою /atestatsiia' }
+      - { name: section, label: Розділ меню, widget: string, required: false, hint: 'Наприклад: Діяльність Центру' }
+      - name: gallery
+        label: Фотогалерея
+        widget: list
+        required: false
+        fields:
+          - { name: image, label: Зображення, widget: image }
+          - { name: caption, label: Підпис, widget: string, required: false }
+      - name: attachments
+        label: Прикріплені файли
+        widget: list
+        required: false
+        summary: '{{fields.label}}'
+        fields:
+          - { name: label, label: Назва файлу для відображення, widget: string }
+          - { name: file, label: Файл (PDF, DOCX тощо), widget: file, media_folder: /public/documents, public_folder: /documents }
+      - { name: seo_title, label: 'SEO: заголовок сторінки', widget: string, required: false }
+      - { name: seo_description, label: 'SEO: опис сторінки', widget: text, required: false }
+      - { name: body, label: Вміст сторінки, widget: markdown }
+
+  # ─────────────── КОМАНДА ───────────────
+  - name: team
+    label: Команда
+    label_singular: Працівник
+    folder: content/team
+    create: true
+    slug: '{{slug}}'
+    identifier_field: name
+    sortable_fields: [order, name]
+    fields:
+      - { name: name, label: 'Прізвище, ім’я, по батькові', widget: string }
+      - { name: position, label: Посада, widget: string }
+      - { name: photo, label: Фото, widget: image, required: false }
+      - { name: order, label: Порядок відображення, widget: number, default: 10, value_type: int, hint: 'Менше число — вище у списку' }
+      - { name: body, label: Про працівника (необов’язково), widget: markdown, required: false }
+
+  # ─────────────── НАЛАШТУВАННЯ ───────────────
+  - name: settings
+    label: Налаштування сайту
+    files:
+      - name: site
+        label: Загальні налаштування
+        file: content/settings/site.yml
+        fields:
+          - { name: site_name, label: Повна назва установи, widget: string }
+          - { name: site_short_name, label: Коротка назва, widget: string }
+          - { name: site_description, label: Опис сайту (для SEO), widget: text }
+          - { name: logo, label: Логотип, widget: image, required: false }
+          - { name: address, label: Адреса, widget: string, required: false }
+          - { name: map_url, label: Посилання на мапу, widget: string, required: false }
+          - name: phones
+            label: Телефони
+            widget: list
+            required: false
+            field: { name: phone, label: Телефон, widget: string }
+          - { name: email, label: Електронна пошта, widget: string, required: false }
+          - { name: consultation_url, label: 'Посилання на форму запису на консультацію', widget: string, required: false }
+          - name: schedule
+            label: Графік роботи
+            widget: list
+            required: false
+            fields:
+              - { name: days, label: Дні, widget: string }
+              - { name: hours, label: Години, widget: string }
+          - name: partners
+            label: Партнери (блок «Ми співпрацюємо»)
+            widget: list
+            required: false
+            summary: '{{fields.name}}'
+            fields:
+              - { name: name, label: Назва організації, widget: string }
+              - { name: image, label: Логотип, widget: image, required: false }
+              - { name: url, label: Сайт організації, widget: string, required: false }
+      - name: navigation
+        label: Меню сайту
+        file: content/settings/navigation.yml
+        fields:
+          - name: sections
+            label: Розділи меню
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - { name: title, label: Назва розділу, widget: string }
+              - name: items
+                label: Пункти меню
+                widget: list
+                summary: '{{fields.label}}'
+                fields:
+                  - { name: label, label: Назва пункту, widget: string }
+                  - { name: url, label: 'Адреса (наприклад /atestatsiia або /novyny)', widget: string }
