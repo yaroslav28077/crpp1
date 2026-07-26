@@ -1,4 +1,3 @@
-import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Inter, Manrope } from 'next/font/google'
 import { getSiteSettings, getNavigation } from '@/lib/content'
@@ -43,7 +42,6 @@ export default function RootLayout({
         <SiteHeader settings={settings} navigation={navigation} />
         <div className="flex-1">{children}</div>
         <SiteFooter settings={settings} navigation={navigation} />
-        {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
   )
