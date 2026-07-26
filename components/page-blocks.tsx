@@ -120,30 +120,51 @@ export async function PageBlocks({ blocks }: { blocks: PageBlock[] }) {
             )
           }
 
-          case 'documents':
-            if (block.items.length === 0) return null
+          case 'documents': {
+            const docs = block.items.filter((d) => d.file || d.url)
+            if (docs.length === 0) return null
+            const list = (
+              <ul className="flex flex-col gap-2">
+                {docs.map((doc, k) => {
+                  // Завантажений файл має перевагу над вписаною адресою
+                  const href = doc.file || doc.url || ''
+                  return (
+                    <li key={`${href}-${k}`}>
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline underline-offset-2 text-sm"
+                      >
+                        {doc.label || href}
+                      </a>
+                    </li>
+                  )
+                })}
+              </ul>
+            )
+            // Згорнутий вигляд повторює колишні розділи «Документи»,
+            // які цей блок замінив
+            if (block.collapsed) {
+              return (
+                <div key={i} className="article-content">
+                  <details>
+                    <summary>{block.title || 'Документи'}</summary>
+                    <div>{list}</div>
+                  </details>
+                </div>
+              )
+            }
             return (
               <section key={i} className="rounded-xl border border-border bg-card p-5">
                 <h2 className="font-heading font-bold mb-3 flex items-center gap-2">
                   <FileText className="size-4" aria-hidden="true" />
                   {block.title || 'Документи'}
                 </h2>
-                <ul className="flex flex-col gap-2">
-                  {block.items.map((doc) => (
-                    <li key={doc.url}>
-                      <a
-                        href={doc.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary underline underline-offset-2 text-sm"
-                      >
-                        {doc.label || doc.url}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                {list}
               </section>
             )
+          }
 
           case 'gallery':
             return <PhotoGallery key={i} items={block.images} title={block.title} />
