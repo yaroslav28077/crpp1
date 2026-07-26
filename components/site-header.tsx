@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ChevronDown, Menu, X, Phone, Mail } from 'lucide-react'
+import { ChevronDown, Menu, X, Phone, Mail, Search } from 'lucide-react'
 import type { NavSection, SiteSettings } from '@/lib/content'
 
 export function SiteHeader({
@@ -125,6 +125,15 @@ export function SiteHeader({
           >
             Головна
           </Link>
+          <Link
+            href="/poshuk"
+            className={`px-3 py-2.5 text-sm font-medium inline-flex items-center gap-1.5 hover:text-accent ${
+              pathname === '/poshuk' ? 'text-accent' : 'text-surface-foreground/85'
+            }`}
+          >
+            <Search className="size-3.5" aria-hidden="true" />
+            Пошук
+          </Link>
           {navigation.map((section) => {
             const isOpen = openDesktop === section.title
             const isActive = section.items.some((item) => item.url === pathname)
@@ -184,6 +193,14 @@ export function SiteHeader({
               onClick={() => setMobileOpen(false)}
             >
               Головна
+            </Link>
+            <Link
+              href="/poshuk"
+              className="py-2.5 font-medium border-b border-surface-border flex items-center gap-2"
+              onClick={() => setMobileOpen(false)}
+            >
+              <Search className="size-4" aria-hidden="true" />
+              Пошук
             </Link>
             {navigation.map((section) => (
               <div key={section.title} className="border-b border-surface-border last:border-0">
