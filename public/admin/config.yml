@@ -30,6 +30,11 @@ collections:
       - name: date
         label: Дата публікації
         widget: datetime
+        # format задає, ЯК дата лягає у файл, а date_format/time_format —
+        # лише як вона виглядає в календарику. Без format Decap може
+        # записати «26.07.2026T10:00», а сайт читає дату через new Date():
+        # на такому значенні збірка падає з RangeError і деплой не проходить.
+        format: YYYY-MM-DDTHH:mm:ss.SSSZ
         date_format: DD.MM.YYYY
         time_format: HH:mm
         hint: Від неї залежить порядок у стрічці та рік в архіві

@@ -131,6 +131,29 @@ function readMd(dir: string) {
     })
 }
 
+/**
+ * Дата з frontmatter у вигляді ISO.
+ *
+ * Значення приходить із CMS, тож може виявитися нечитним (наприклад,
+ * «26.07.2026T10:00»). Без запобіжника new Date(...).toISOString() кидає
+ * RangeError і валить збірку ВСЬОГО сайту через одну публікацію: на Netlify
+ * це провалений деплой, і сайт застигає на попередній версії.
+ * Краще показати таку новину з датою файлу й лишити сайт робочим.
+ */
+function parseDate(value: unknown, file: string): string {
+  if (value) {
+    const d = new Date(value as string)
+    if (!Number.isNaN(d.getTime())) return d.toISOString()
+    console.warn(`[content] Нечитна дата у content/news/${file}: ${JSON.stringify(value)}`)
+  }
+  const fromName = file.match(/^(\d{4}-\d{2}-\d{2})/)
+  if (fromName) {
+    const d = new Date(`${fromName[1]}T12:00:00.000Z`)
+    if (!Number.isNaN(d.getTime())) return d.toISOString()
+  }
+  return "1970-01-01T00:00:00.000Z"
+}
+
 // Кешуємо лише в продакшні: у дев-режимі редактор має бачити нові файли одразу
 const isProd = process.env.NODE_ENV === "production"
 
@@ -144,7 +167,7 @@ export function getAllNews(): NewsItem[] {
       // Через slugify, бо CMS називає нові файли кирилицею — див. lib/slug.ts
       slug: slugify(file.replace(/\.md$/, "")),
       title: String(data.title || file),
-      date: data.date ? new Date(data.date).toISOString() : "1970-01-01T00:00:00.000Z",
+      date: parseDate(data.date, file),
       description: data.description ? String(data.description) : undefined,
       cover: data.cover ? String(data.cover) : gallery[0]?.image,
       tags: Array.isArray(data.tags) ? data.tags.map(String) : [],

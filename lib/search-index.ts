@@ -53,6 +53,10 @@ function blocksToText(blocks: PageBlock[]): string {
           return `${b.title} ${b.text}`
         case "documents":
           return [b.title, ...b.items.map((i) => i.label)].filter(Boolean).join(" ")
+        case "news_by_topic":
+          // extra зберігає заходи, яких на сайті більше ніде немає —
+          // без цього рядка вони випадали з пошуку
+          return `${b.title || ""} ${b.extra || ""}`
         case "news_list":
         case "gallery":
           return b.title || ""

@@ -26,8 +26,11 @@ export default async function StaticPage({ params }: { params: Promise<{ slug: s
   const page = getPageBySlug(slug)
   if (!page) notFound()
 
-  // Сторінки переведено на блоки; body лишається для сумісності зі старим форматом
-  const legacyHtml = page.blocks.length === 0 ? await markdownToHtml(page.body) : null
+  // Сторінки переведено на блоки, але body лишається для сумісності. Показуємо
+  // його щоразу, коли він непорожній, а не лише за відсутності блоків: інакше
+  // редактор, який почав переносити стару сторінку і додав перший блок,
+  // одразу втрачав із сайту весь її текст, нічого про це не знаючи.
+  const legacyHtml = page.body.trim() ? await markdownToHtml(page.body) : null
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
@@ -43,10 +46,13 @@ export default async function StaticPage({ params }: { params: Promise<{ slug: s
         </h1>
       </header>
 
-      {legacyHtml !== null ? (
-        <div className="article-content" dangerouslySetInnerHTML={{ __html: legacyHtml }} />
-      ) : (
-        <PageBlocks blocks={page.blocks} />
+      <PageBlocks blocks={page.blocks} />
+
+      {legacyHtml !== null && (
+        <div
+          className={`article-content${page.blocks.length > 0 ? ' mt-6' : ''}`}
+          dangerouslySetInnerHTML={{ __html: legacyHtml }}
+        />
       )}
 
       {page.attachments.length > 0 && (
