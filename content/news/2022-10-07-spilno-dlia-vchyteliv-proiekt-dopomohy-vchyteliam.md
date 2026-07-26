@@ -7,4 +7,4 @@ tags:
   - '2022'
 ---
 
-[![](/images/ico/pdf.png)](https://drive.google.com/file/d/1HVb28RX-gwP9oDfof8V0SYZz-p-ax4n_/view?usp=sharing)
+[![PDF](/images/ico/pdf.png) Про проєкт «Спільно для вчителів» (PDF)](https://drive.google.com/file/d/1HVb28RX-gwP9oDfof8V0SYZz-p-ax4n_/view?usp=sharing)

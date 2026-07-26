@@ -32,7 +32,7 @@ slug: shkilna-biblioteka
 - Нарада шкільних бібліотекарів Лубенської ТГ
 - Семінар-практикум шкільних бібліотекарів закладів освіти Лубенської територіальної громади
 - Нарада шкільних бібліотекарів
->[![](/images/pict/Moon_2021.jpg)](https://drive.google.com/file/d/16f9yLUylzs8RGVDQ2kjjyeGMiYx_XHUJ/view?usp=sharing)
+[![Матеріали наради шкільних бібліотекарів](/images/pict/Moon_2021.jpg)](https://drive.google.com/file/d/16f9yLUylzs8RGVDQ2kjjyeGMiYx_XHUJ/view?usp=sharing)
 
 </details>
 
