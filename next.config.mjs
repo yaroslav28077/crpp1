@@ -1,3 +1,15 @@
+import legacy from './lib/legacy-redirects.json' with { type: 'json' }
+
+/**
+ * Заголовки нотаток старого сайту містять символи, які path-to-regexp
+ * (його використовує Next для source) тлумачить як синтаксис шаблону:
+ * дужки з транслітерації «» -> (( )), а також ^ $ : . тощо.
+ * Без екранування правило або не збіглося б, або зламало б збірку.
+ */
+function escapeSource(p) {
+  return p.replace(/[\\^$.*+?()[\]{}|:]/g, '\\$&')
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -9,6 +21,21 @@ const nextConfig = {
       // перехоплював катч-ол app/[slug] і віддавав 404 — адмінка була
       // недоступна. Віддаємо статичний index.html CMS напряму.
       { source: '/admin', destination: '/admin/index.html' },
+    ]
+  },
+  async redirects() {
+    return [
+      // Точкові переходи зі старих адрес /notes/<translit>.html.
+      // Генерується scripts/generate-redirects.mjs із заголовків контенту.
+      ...legacy.rules.map((r) => ({
+        source: escapeSource(r.from),
+        destination: r.to,
+        permanent: true,
+      })),
+      // Зображення старого сайту лежали в /pict/ і /notes/, тепер під /images/.
+      // Ідуть ПІСЛЯ точкових правил, щоб не перехопити /notes/<назва>.html.
+      { source: '/pict/:path*', destination: '/images/pict/:path*', permanent: true },
+      { source: '/notes/:path*', destination: '/images/notes/:path*', permanent: true },
     ]
   },
 }
