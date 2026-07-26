@@ -61,8 +61,17 @@ export type PageBlock =
    * зберігаються під списком як текст.
    */
   | { type: "news_by_topic"; title?: string; topic: string; extra?: string }
-  /** Список документів із посиланнями */
-  | { type: "documents"; title?: string; items: { label: string; url: string }[] }
+  /**
+   * Список документів. Редактор заповнює «Назву» і «Посилання» в окремих
+   * полях, а не робить посилання руками в Markdown.
+   * `collapsed` — показувати згорнутим, як колишні розділи «Документи».
+   */
+  | {
+      type: "documents"
+      title?: string
+      collapsed?: boolean
+      items: { label: string; url?: string; file?: string }[]
+    }
   /** Фотогалерея */
   | { type: "gallery"; title?: string; images: GalleryItem[] }
 

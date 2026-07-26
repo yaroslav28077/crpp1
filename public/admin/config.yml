@@ -223,18 +223,35 @@ collections:
                   display_fields: ['{{title}}']
 
           - name: documents
-            label: Документи
+            label: Документи й посилання
             summary: '{{fields.title}}'
             fields:
               - { name: title, label: Заголовок, widget: string, required: false, default: Документи }
+              - name: collapsed
+                label: Показувати згорнутим
+                widget: boolean
+                default: true
+                hint: Розділ буде закритий, доки відвідувач не клацне по заголовку
               - name: items
-                label: Файли
+                label: Перелік
                 label_singular: Документ
                 widget: list
                 summary: '{{fields.label}}'
+                hint: Кожен рядок — назва й посилання. Порядок можна змінювати перетягуванням.
                 fields:
-                  - { name: label, label: Назва документа, widget: string }
-                  - { name: url, label: Посилання, widget: string, hint: Адреса на Google Диску або на сайті }
+                  - { name: label, label: Назва, widget: string, hint: Те, що побачить відвідувач }
+                  - name: url
+                    label: Посилання
+                    widget: string
+                    required: false
+                    hint: Адреса на Google Диску або будь-яка інша. Якщо натомість завантажуєте файл — лишіть порожнім.
+                  - name: file
+                    label: Або завантажити файл
+                    widget: file
+                    required: false
+                    media_folder: /public/documents
+                    public_folder: /documents
+                    hint: Для файлів, які зберігаються на самому сайті. Має перевагу над посиланням вище.
 
           - name: gallery
             label: Фотогалерея
