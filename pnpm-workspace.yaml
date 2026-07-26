@@ -9,6 +9,8 @@ allowBuilds:
   sharp: true
   # транзитивна залежність shadcn, у рантаймі сайту не використовується
   msw: false
+  # нативний резолвер імпортів для ESLint — без збірки не працює
+  unrs-resolver: true
 
 overrides:
   hono: 4.12.25

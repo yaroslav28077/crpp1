@@ -19,11 +19,16 @@ export function SiteHeader({
   const navRef = useRef<HTMLElement>(null)
   const pathname = usePathname()
 
-  // Закривати меню при переході на іншу сторінку
-  useEffect(() => {
+  // Закривати меню при переході на іншу сторінку.
+  // Скидаємо під час рендеру, а не в useEffect: так React не встигає
+  // показати нову сторінку з відкритим меню й не робить зайвий прохід.
+  const [prevPathname, setPrevPathname] = useState(pathname)
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname)
     setOpenDesktop(null)
     setMobileOpen(false)
-  }, [pathname])
+    setOpenSection(null)
+  }
 
   // Закривати при кліку поза навігацією та по Escape
   useEffect(() => {
