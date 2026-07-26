@@ -52,6 +52,17 @@ function readDir(dir) {
     })
 }
 
+/**
+ * Заголовки тіддлерів, яких більше немає в контенті, але старі адреси мають
+ * лишатися робочими. Сюди потрапляють дублікати, злиті в одну публікацію:
+ * на старому сайті це були різні тіддлери (назви відрізнялися пробілом),
+ * тож і адреси в них різні.
+ */
+const MERGED = [
+  // Та сама нарада 22.10.2024; другий тіддлер мав помилкову дату створення 2022 р.
+  { title: "Нарада заступників директорів ЗЗСО", to: "/novyny/2024-10-24-narada-zastupnykiv-dyrektoriv-zzso" },
+]
+
 const rules = []
 const seen = new Map()
 let collisions = 0
@@ -77,6 +88,8 @@ for (const { file, data } of readDir("pages")) {
   const original = String(data.full_title || data.title)
   addRule(oldNoteUrl(original), `/${slug}`)
 }
+
+for (const { title, to } of MERGED) addRule(oldNoteUrl(title), to)
 
 const out = {
   _comment: "Згенеровано scripts/generate-redirects.mjs — не редагувати вручну.",

@@ -154,10 +154,6 @@
       "to": "/novyny/2022-08-18-onovleno-zmist-navchalnykh-prohram-zso"
     },
     {
-      "from": "/notes/Narada%20zastupnikiv%20direktoriv%20ZZSO.html",
-      "to": "/novyny/2022-08-22-narada-zastupnykiv-dyrektoriv-zzso"
-    },
-    {
       "from": "/notes/Osvityani%20Lubenschini%20gotuyutsya%20do%20novogo%202022-2023%20navchalnogo%20roku.html",
       "to": "/novyny/2022-08-29-osvitiany-lubenshchyny-hotuiutsia-do-novoho-2022-2023-navchalnoho-roku"
     },
@@ -1220,6 +1216,10 @@
     {
       "from": "/notes/Zagalna%20serednya%20osvita.html",
       "to": "/zahalna-serednia-osvita"
+    },
+    {
+      "from": "/notes/Narada%20zastupnikiv%20direktoriv%20ZZSO.html",
+      "to": "/novyny/2024-10-24-narada-zastupnykiv-dyrektoriv-zzso"
     }
   ]
 }
