@@ -2,6 +2,12 @@
 // 1) color(...): / bgcolor(...): — префікси фарбування тексту
 // 2) {{{ і }}} — блоки моноширинного тексту (обгортали звичайні абзаци)
 // 3) description: '{{{' — зіпсовані SEO-описи; перегенеровуємо з тексту
+// 4) [>img(30%,)[шлях]] — обтічні зображення: migrate.mjs розпізнавав лише
+//    [img[...]] без префікса вирівнювання, тож ця розмітка лишалася в тексті
+//    і показувалася читачам як є. Самі файли теж ніколи не завантажилися
+//    (registerAsset для них не викликався), а старий сайт уже недоступний,
+//    тому лишається тільки прибрати розмітку, зберігши текст абзацу.
+// 5) " -- " — ASCII-замінник тире з TiddlyWiki; у решті контенту вже "—"
 import fs from "node:fs"
 import path from "node:path"
 
@@ -29,6 +35,8 @@ let filesChanged = 0
 let colorFixed = 0
 let bracesFixed = 0
 let descFixed = 0
+let imgFixed = 0
+let dashFixed = 0
 
 for (const file of walk(CONTENT)) {
   const src = fs.readFileSync(file, "utf8")
@@ -55,6 +63,18 @@ for (const file of walk(CONTENT)) {
     descFixed++
   }
 
+  // 4) обтічні зображення [>img(30%,)[шлях]] — шлях може бути і з \, і з /
+  out = out.replace(/\[[<>]?img\([^)]*\)\[[^\]]+\]\]\s*/g, () => {
+    imgFixed++
+    return ""
+  })
+
+  // 5) ASCII-тире між пробілами
+  out = out.replace(/ -- /g, () => {
+    dashFixed++
+    return " — "
+  })
+
   if (out !== src) {
     fs.writeFileSync(file, out)
     filesChanged++
@@ -65,3 +85,5 @@ console.log(`Файлів змінено: ${filesChanged}`)
 console.log(`color(...): прибрано: ${colorFixed}`)
 console.log(`{{{ / }}} прибрано: ${bracesFixed}`)
 console.log(`описів перегенеровано: ${descFixed}`)
+console.log(`[>img[...]] прибрано: ${imgFixed}`)
+console.log(`" -- " замінено на тире: ${dashFixed}`)
