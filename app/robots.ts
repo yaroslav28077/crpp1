@@ -1,14 +1,14 @@
 import type { MetadataRoute } from 'next'
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://lubny-cprpp.netlify.app'
+import { SITE_URL } from '@/lib/site-url'
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/admin/'],
+      // без кінцевого слеша, щоб покрити і /admin, і /admin/*
+      disallow: ['/admin'],
     },
-    sitemap: `${BASE_URL}/sitemap.xml`,
+    sitemap: `${SITE_URL}/sitemap.xml`,
   }
 }

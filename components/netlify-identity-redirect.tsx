@@ -16,7 +16,8 @@ export function NetlifyIdentityRedirect() {
       hash.includes('confirmation_token=') ||
       hash.includes('email_change_token=')
     ) {
-      window.location.replace('/admin/' + hash)
+      // без кінцевого слеша: /admin/ дає зайвий 308-редирект
+      window.location.replace('/admin' + hash)
     }
   }, [])
 

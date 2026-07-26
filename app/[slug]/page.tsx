@@ -4,6 +4,7 @@ import { Paperclip } from 'lucide-react'
 import { getAllPages, getPageBySlug } from '@/lib/content'
 import { markdownToHtml } from '@/lib/markdown'
 import { PhotoGallery } from '@/components/photo-gallery'
+import { PageBlocks } from '@/components/page-blocks'
 
 export function generateStaticParams() {
   return getAllPages().map((p) => ({ slug: p.slug }))
@@ -14,8 +15,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const page = getPageBySlug(slug)
   if (!page) return {}
   return {
+    // У <title> лишається короткий ярлик: повна назва не влазить у вкладку і видачу
     title: page.seo_title || page.title,
-    description: page.seo_description || undefined,
+    description: page.seo_description || page.full_title || undefined,
   }
 }
 
@@ -24,7 +26,11 @@ export default async function StaticPage({ params }: { params: Promise<{ slug: s
   const page = getPageBySlug(slug)
   if (!page) notFound()
 
-  const html = await markdownToHtml(page.body)
+  // Сторінки переведено на блоки, але body лишається для сумісності. Показуємо
+  // його щоразу, коли він непорожній, а не лише за відсутності блоків: інакше
+  // редактор, який почав переносити стару сторінку і додав перший блок,
+  // одразу втрачав із сайту весь її текст, нічого про це не знаючи.
+  const legacyHtml = page.body.trim() ? await markdownToHtml(page.body) : null
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
@@ -34,10 +40,20 @@ export default async function StaticPage({ params }: { params: Promise<{ slug: s
             {page.section}
           </p>
         )}
-        <h1 className="font-heading text-3xl md:text-4xl font-bold text-balance">{page.title}</h1>
+        {/* Меню показує короткий ярлик, а на самій сторінці доречна повна офіційна назва */}
+        <h1 className="font-heading text-3xl md:text-4xl font-bold text-balance">
+          {page.full_title || page.title}
+        </h1>
       </header>
 
-      <div className="article-content" dangerouslySetInnerHTML={{ __html: html }} />
+      <PageBlocks blocks={page.blocks} />
+
+      {legacyHtml !== null && (
+        <div
+          className={`article-content${page.blocks.length > 0 ? ' mt-6' : ''}`}
+          dangerouslySetInnerHTML={{ __html: legacyHtml }}
+        />
+      )}
 
       {page.attachments.length > 0 && (
         <section className="mt-8 rounded-xl border border-border bg-card p-5" aria-label="Прикріплені файли">

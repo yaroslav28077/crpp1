@@ -9,8 +9,6 @@ export function SiteFooter({
   settings: SiteSettings
   navigation: NavSection[]
 }) {
-  const year = new Date().getFullYear()
-
   return (
     <footer className="bg-surface text-surface-foreground mt-16">
       <div className="mx-auto max-w-6xl px-4 py-12 grid gap-10 md:grid-cols-3">
@@ -75,9 +73,20 @@ export function SiteFooter({
       <div className="border-t border-surface-border">
         <div className="mx-auto max-w-6xl px-4 py-4 text-xs opacity-70 flex flex-wrap justify-between gap-2">
           <p>
-            © {year} {settings.site_short_name}. Усі права захищено.
+            {/*
+              Без року: футер рендериться статично, тож new Date() зафіксував би
+              рік збірки й показував би застаріле значення до наступного деплою.
+            */}
+            © {settings.site_short_name}. Усі права захищено.
           </p>
-          <a href="/admin/" className="hover:underline">
+          {/*
+            Свідомо звичайний <a>, а не <Link>: /admin — статичний HTML
+            Decap CMS у public/, він живе поза роутером Next, тож клієнтська
+            навігація для нього не працює. Без кінцевого слеша — інакше
+            зайвий 308-редирект.
+          */}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+          <a href="/admin" className="hover:underline">
             Вхід для редакторів
           </a>
         </div>

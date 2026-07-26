@@ -2,6 +2,7 @@ import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
 import * as yaml from "js-yaml"
+import { slugify } from "./slug"
 
 const CONTENT_DIR = path.join(process.cwd(), "content")
 
@@ -22,6 +23,12 @@ export interface NewsItem {
   description?: string
   cover?: string
   tags: string[]
+  /**
+   * Теми, до яких належить публікація. Збігаються з адресами сторінок
+   * спільнот (doshkillia, shkilna-biblioteka…): за ними сторінки самі
+   * збирають свої списки «Події».
+   */
+  topics: string[]
   gallery: GalleryItem[]
   attachments: AttachmentItem[]
   body: string
@@ -29,11 +36,50 @@ export interface NewsItem {
   seo_description?: string
 }
 
+/**
+ * Блоки сторінки. Замінили суцільний Markdown із сирими <details>: тепер
+ * кожен розділ — окреме поле в адмінці, яке можна перейменувати, переставити
+ * чи видалити, не знаючи верстки.
+ *
+ * Усередині «Тексту» та «Розділу» лишається Markdown: там трапляються
+ * таблиці й вкладені списки, для яких окремих полів не напасешся.
+ * Для щоденних завдань є структуровані блоки — новини й документи.
+ */
+export type PageBlock =
+  /** Виділена рамка-оголошення вгорі сторінки */
+  | { type: "notice"; heading: string; text: string }
+  /** Довільний текст */
+  | { type: "text"; text: string }
+  /** Розгортуваний розділ («Події», «Документи» тощо) */
+  | { type: "accordion"; title: string; text: string }
+  /** Список новин: редактор обирає публікації зі списку, а не вписує адреси */
+  | { type: "news_list"; title?: string; items: string[] }
+  /**
+   * Список новин, що збирається сам за темою. Досі такі списки вели вручну
+   * і систематично забували поповнювати. `extra` — сліди матеріалів, які не
+   * перенеслися зі старого сайту: вони лишилися без посилань, тож
+   * зберігаються під списком як текст.
+   */
+  | { type: "news_by_topic"; title?: string; topic: string; extra?: string }
+  /** Список документів із посиланнями */
+  | { type: "documents"; title?: string; items: { label: string; url: string }[] }
+  /** Фотогалерея */
+  | { type: "gallery"; title?: string; images: GalleryItem[] }
+
 export interface PageItem {
   slug: string
+  /** Короткий ярлик — те, що показує меню */
   title: string
+  /**
+   * Повна офіційна назва, коли вона довша за ярлик меню (наприклад
+   * «Стратегія розвитку» -> «Стратегія розвитку Комунальної установи …»).
+   * Її пише міграція, коли заголовок тіддлера відрізнявся від пункту меню.
+   */
+  full_title?: string
   section?: string
+  /** Тіло старого формату. Лишається для сумісності; нові сторінки — у blocks */
   body: string
+  blocks: PageBlock[]
   gallery: GalleryItem[]
   attachments: AttachmentItem[]
   seo_title?: string
@@ -85,6 +131,29 @@ function readMd(dir: string) {
     })
 }
 
+/**
+ * Дата з frontmatter у вигляді ISO.
+ *
+ * Значення приходить із CMS, тож може виявитися нечитним (наприклад,
+ * «26.07.2026T10:00»). Без запобіжника new Date(...).toISOString() кидає
+ * RangeError і валить збірку ВСЬОГО сайту через одну публікацію: на Netlify
+ * це провалений деплой, і сайт застигає на попередній версії.
+ * Краще показати таку новину з датою файлу й лишити сайт робочим.
+ */
+function parseDate(value: unknown, file: string): string {
+  if (value) {
+    const d = new Date(value as string)
+    if (!Number.isNaN(d.getTime())) return d.toISOString()
+    console.warn(`[content] Нечитна дата у content/news/${file}: ${JSON.stringify(value)}`)
+  }
+  const fromName = file.match(/^(\d{4}-\d{2}-\d{2})/)
+  if (fromName) {
+    const d = new Date(`${fromName[1]}T12:00:00.000Z`)
+    if (!Number.isNaN(d.getTime())) return d.toISOString()
+  }
+  return "1970-01-01T00:00:00.000Z"
+}
+
 // Кешуємо лише в продакшні: у дев-режимі редактор має бачити нові файли одразу
 const isProd = process.env.NODE_ENV === "production"
 
@@ -95,12 +164,14 @@ export function getAllNews(): NewsItem[] {
   const items = readMd("news").map(({ file, data, content }) => {
     const gallery: GalleryItem[] = Array.isArray(data.gallery) ? data.gallery.filter((g: GalleryItem) => g?.image) : []
     return {
-      slug: file.replace(/\.md$/, ""),
+      // Через slugify, бо CMS називає нові файли кирилицею — див. lib/slug.ts
+      slug: slugify(file.replace(/\.md$/, "")),
       title: String(data.title || file),
-      date: data.date ? new Date(data.date).toISOString() : "1970-01-01T00:00:00.000Z",
+      date: parseDate(data.date, file),
       description: data.description ? String(data.description) : undefined,
       cover: data.cover ? String(data.cover) : gallery[0]?.image,
       tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
+      topics: Array.isArray(data.topics) ? data.topics.map(String) : [],
       gallery,
       attachments: Array.isArray(data.attachments) ? data.attachments : [],
       body: content,
@@ -127,10 +198,12 @@ let pagesCache: PageItem[] | null = null
 export function getAllPages(): PageItem[] {
   if (isProd && pagesCache) return pagesCache
   pagesCache = readMd("pages").map(({ file, data, content }) => ({
-    slug: String(data.slug || file.replace(/\.md$/, "")),
+    slug: slugify(String(data.slug || file.replace(/\.md$/, ""))),
     title: String(data.title || file),
+    full_title: data.full_title ? String(data.full_title) : undefined,
     section: data.section ? String(data.section) : undefined,
     body: content,
+    blocks: Array.isArray(data.blocks) ? (data.blocks as PageBlock[]).filter((b) => b?.type) : [],
     gallery: Array.isArray(data.gallery) ? data.gallery.filter((g: GalleryItem) => g?.image) : [],
     attachments: Array.isArray(data.attachments) ? data.attachments : [],
     seo_title: data.seo_title,

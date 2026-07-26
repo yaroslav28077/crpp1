@@ -10,6 +10,8 @@ gallery:
   - image: /images/notes/2024/12/cert/02.jpg
   - image: /images/notes/2024/12/cert/03.jpg
   - image: /images/notes/2024/12/cert/04.jpg
+topics:
+  - sertyfikatsiia-pedahohichnykh-pratsivnykiv
 ---
 
 Центр професійного розвитку педагогічних працівників щиро вітає наших освітян, які успішно пройшли сертифікацію - 2024:

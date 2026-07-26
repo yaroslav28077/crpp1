@@ -1,23 +1,25 @@
-import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Inter, Manrope } from 'next/font/google'
 import { getSiteSettings, getNavigation } from '@/lib/content'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { NetlifyIdentityRedirect } from '@/components/netlify-identity-redirect'
+import { SITE_URL } from '@/lib/site-url'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin', 'cyrillic'], variable: '--font-inter' })
 const manrope = Manrope({ subsets: ['latin', 'cyrillic'], variable: '--font-manrope' })
 
 export const metadata: Metadata = {
+  // Без metadataBase Next будує Open Graph-адреси від http://localhost:3000,
+  // тож обкладинки новин були непридатні для соцмереж
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'ЦПРПП м. Лубни — Центр професійного розвитку педагогічних працівників',
     template: '%s — ЦПРПП м. Лубни',
   },
   description:
     'Комунальна установа «Центр професійного розвитку педагогічних працівників Лубенської міської ради» Лубенського району Полтавської області',
-  generator: 'v0.app',
 }
 
 export const viewport: Viewport = {
@@ -40,7 +42,6 @@ export default function RootLayout({
         <SiteHeader settings={settings} navigation={navigation} />
         <div className="flex-1">{children}</div>
         <SiteFooter settings={settings} navigation={navigation} />
-        {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
   )
