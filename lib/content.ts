@@ -22,6 +22,11 @@ export interface NewsItem {
   date: string
   description?: string
   cover?: string
+  /**
+   * Хто підготував публікацію. На старому сайті це була таблиця з однієї
+   * клітинки в кінці тексту — тепер окреме поле, однакове в усіх новинах.
+   */
+  author?: string
   tags: string[]
   /**
    * Теми, до яких належить публікація. Збігаються з адресами сторінок
@@ -163,6 +168,50 @@ function parseDate(value: unknown, file: string): string {
   return "1970-01-01T00:00:00.000Z"
 }
 
+/**
+ * Короткий опис для картки новини й для сніпета в пошуковиках.
+ *
+ * Якщо редактор його не заповнив, беремо перший змістовний абзац: інакше
+ * картка виглядала б голою, а Google показав би випадковий уривок сторінки.
+ * Так поле стає справді необов'язковим.
+ */
+function deriveDescription(explicit: unknown, body: string, title: string): string | undefined {
+  const given = explicit ? String(explicit).trim() : ""
+  if (given) return given
+
+  // Опис, що лише переказує заголовок, нічого не додає: у картці той самий
+  // текст стояв би двічі, а пошуковики такий сніпет ігнорують
+  const norm = (s: string) =>
+    s
+      .toLowerCase()
+      .replace(/\([^)]*\)/g, "")
+      .replace(/[^\p{L}\p{N}\s]/gu, "")
+      .replace(/\s+/g, " ")
+      .trim()
+  const normTitle = norm(title)
+
+  for (const raw of body.split(/\r?\n/)) {
+    const line = raw.trim()
+    if (!line) continue
+    if (/^(#|\||<|!\[|>|-{3,}|\*|\d+\.|-\s)/.test(line)) continue
+    const clean = line
+      .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+      .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+      .replace(/<[^>]+>/g, "")
+      .replace(/[*_`]{1,3}/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+    if (clean.length <= 40) continue
+    const n = norm(clean)
+    if (normTitle && (normTitle.includes(n) || n.includes(normTitle))) continue
+    if (clean.length <= 160) return clean
+    const cut = clean.slice(0, 159)
+    const lastSpace = cut.lastIndexOf(" ")
+    return (lastSpace > 80 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:—–\-(«"]+$/, "") + "…"
+  }
+  return undefined
+}
+
 // Кешуємо лише в продакшні: у дев-режимі редактор має бачити нові файли одразу
 const isProd = process.env.NODE_ENV === "production"
 
@@ -177,7 +226,8 @@ export function getAllNews(): NewsItem[] {
       slug: slugify(file.replace(/\.md$/, "")),
       title: String(data.title || file),
       date: parseDate(data.date, file),
-      description: data.description ? String(data.description) : undefined,
+      description: deriveDescription(data.description, content, String(data.title || "")),
+      author: data.author ? String(data.author).trim() : undefined,
       cover: data.cover ? String(data.cover) : gallery[0]?.image,
       tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
       topics: Array.isArray(data.topics) ? data.topics.map(String) : [],

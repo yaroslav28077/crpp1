@@ -47,6 +47,14 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
 
         <div className="article-content" dangerouslySetInnerHTML={{ __html: html }} />
 
+        {/* Підпис автора. Раніше його верстали таблицею просто в тексті,
+            тож вигляд гуляв від новини до новини */}
+        {item.author && (
+          <p className="mt-6 pt-4 border-t border-border text-sm text-muted-foreground text-right whitespace-pre-line">
+            {item.author}
+          </p>
+        )}
+
         {item.attachments.length > 0 && (
           <section className="mt-8 rounded-xl border border-border bg-card p-5" aria-label="Прикріплені файли">
             <h2 className="font-heading font-bold mb-3 flex items-center gap-2">
