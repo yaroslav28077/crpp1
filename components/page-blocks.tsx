@@ -14,8 +14,11 @@ async function renderMarkdown(blocks: PageBlock[]): Promise<Map<number, string>>
   const html = new Map<number, string>()
   await Promise.all(
     blocks.map(async (block, i) => {
+      // Поля можуть бути відсутні: редактор має право зберегти блок, у якому
+      // ще нічого не заповнив. Без ?? "" збірка ВСЬОГО сайту падала з
+      // «Cannot read properties of undefined», не називаючи ні файлу, ні поля.
       if (block.type === 'text' || block.type === 'accordion' || block.type === 'notice') {
-        html.set(i, await markdownToHtml(block.text))
+        html.set(i, await markdownToHtml(block.text ?? ''))
       } else if (block.type === 'news_by_topic' && block.extra) {
         html.set(i, await markdownToHtml(block.extra))
       }
@@ -85,7 +88,7 @@ export async function PageBlocks({ blocks }: { blocks: PageBlock[] }) {
             // з самої публікації — тож вони не розходяться з нею з часом
             // CMS зберігає назву файлу, а адреси в нас транслітеровані,
             // тож зіставляємо за тим самим правилом (див. lib/slug.ts)
-            const items = block.items
+            const items = (block.items ?? [])
               .map((ref) => {
                 const key = slugify(String(ref).replace(/\.md$/, ''))
                 return news.find((n) => n.slug === key)
@@ -103,7 +106,7 @@ export async function PageBlocks({ blocks }: { blocks: PageBlock[] }) {
           case 'news_by_topic': {
             // Список збирається сам: усі публікації з цією темою, найновіші вгорі.
             // Лишається згорнутим, як був акордеон, який він замінив.
-            const items = news.filter((n) => n.topics.includes(block.topic))
+            const items = block.topic ? news.filter((n) => n.topics.includes(block.topic)) : []
             if (items.length === 0 && !block.extra) return null
             return (
               <div key={i} className="article-content">
@@ -121,7 +124,10 @@ export async function PageBlocks({ blocks }: { blocks: PageBlock[] }) {
           }
 
           case 'documents': {
-            const docs = block.items.filter((d) => d.file || d.url)
+            // Рядок без адреси й без файлу показуємо звичайним текстом, а не
+            // викидаємо: інакше праця редактора зникала б зі сторінки мовчки,
+            // а якщо таких рядків усі — зникав би весь розділ із заголовком.
+            const docs = (block.items ?? []).filter((d) => d?.label || d?.url || d?.file)
             if (docs.length === 0) return null
             const list = (
               <ul className="flex flex-col gap-2">
@@ -130,14 +136,18 @@ export async function PageBlocks({ blocks }: { blocks: PageBlock[] }) {
                   const href = doc.file || doc.url || ''
                   return (
                     <li key={`${href}-${k}`}>
-                      <a
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary underline underline-offset-2 text-sm"
-                      >
-                        {doc.label || href}
-                      </a>
+                      {href ? (
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary underline underline-offset-2 text-sm"
+                        >
+                          {doc.label || href}
+                        </a>
+                      ) : (
+                        <span className="text-sm text-muted-foreground">{doc.label}</span>
+                      )}
                     </li>
                   )
                 })}
@@ -167,7 +177,7 @@ export async function PageBlocks({ blocks }: { blocks: PageBlock[] }) {
           }
 
           case 'gallery':
-            return <PhotoGallery key={i} items={block.images} title={block.title} />
+            return <PhotoGallery key={i} items={block.images ?? []} title={block.title} />
 
           default:
             return null

@@ -17,4 +17,4 @@ tags:
 | Директор Гімназії "ПРОСВІТ" Тамара КОБИЛЯНСЬКА |
 | --- |
 
-## [](/images/notes/2024/05/exprets.jpg)
+![](/images/notes/2024/05/exprets.jpg)

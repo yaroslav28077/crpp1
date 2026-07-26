@@ -25,4 +25,4 @@ topics:
 | Директор ЦПРПП Надія СІЧКАР |
 | --- |
 
-## [](/images/notes/2023/12/sert/bilan.jpg) ![](/images/notes/2023/12/sert/bilanenko.jpg)
+![](/images/notes/2023/12/sert/bilan.jpg) ![](/images/notes/2023/12/sert/bilanenko.jpg)
