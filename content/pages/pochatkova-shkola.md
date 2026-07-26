@@ -3,24 +3,12 @@ title: Початкова школа
 section: Педагогічні спільноти
 slug: pochatkova-shkola
 blocks:
-  - type: accordion
+  - type: news_by_topic
     title: Події
-    text: |-
-      - [Завершення проєкту «Перезавантаження НУШ 1-4 класи»](/novyny/2026-06-18-zavershennia-proiektu-perezavantazhennia-nush-1-4-klasy)
-      - [«Подбай про себе» - тренінг-ретрит для педагогічної спільноти вчителів 3 класів Лубенської ТГ](/novyny/2025-12-02-podbai-pro-sebe-treninh-retryt-dlia-pedahohichnoi-spilnoty-vchyteliv-3-klasiv-lu)
+    topic: pochatkova-shkola
+    extra: |-
       - Психологічна кавʼярня для вчителів 2 класів закладів освіти Лубенської громади
-      - [Новостворена спільнота](/novyny/2024-10-29-novostvorena-spilnota)
-      - [Діяльнісний підхід у дії](/novyny/2024-04-01-diialnisnyi-pidkhid-u-dii)
-      - [Три кроки до успішної сертифікації](/novyny/2024-03-26-try-kroky-do-uspishnoi-sertyfikatsii)
-      - [Круглий стіл «Вироблення рекомендацій щодо оцінювання результатів навчальної діяльності учнів з особливими освітніми потребами»](/novyny/2023-11-03-kruhlyi-stil-vyroblennia-rekomendatsii-shchodo-otsiniuvannia-rezultativ-navchaln)
-      - [Педагогічний воркшоп](/novyny/2023-11-03-pedahohichnyi-vorkshop)
-      - [Педагогіка в особистостях](/novyny/2023-04-06-pedahohika-v-osobystostiakh)
       - Матеріали фестивалю "Калейдоскоп педагогічних ідей"
-      - [Підсумки фестивалю «Калейдоскоп педагогічних ідей учителів початкових класів»](/novyny/2022-12-05-pidsumky-festyvaliu-kaleidoskop-pedahohichnykh-idei-uchyteliv-pochatkovykh-klasi)
-      - [Діяльнісний підхід - один із способів реалізації ідей Нової української школи](/novyny/2022-11-10-diialnisnyi-pidkhid-odyn-iz-sposobiv-realizatsii-idei-novoi-ukrainskoi-shkoly)
-      - [Нова українська школа:  відповідаємо на виклики](/novyny/2022-05-17-nova-ukrainska-shkola-vidpovidaiemo-na-vyklyky)
-      - [Успішне завершення сертифікації](/novyny/2021-12-22-uspishne-zavershennia-sertyfikatsii)
-      - [Чергове засідання творчої групи](/novyny/2021-12-16-cherhove-zasidannia-tvorchoi-hrupy)
       |  |  |
       | --- | --- |
       |  |  |

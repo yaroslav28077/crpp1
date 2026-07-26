@@ -3,9 +3,9 @@ title: Супервізія
 section: Консалтингові послуги
 slug: superviziia
 blocks:
-  - type: accordion
+  - type: news_by_topic
     title: Події
-    text: '- [Професійна підтримка педагога](/novyny/2021-12-23-profesiina-pidtrymka-pedahoha)'
+    topic: superviziia
   - type: accordion
     title: Документи
     text: |-

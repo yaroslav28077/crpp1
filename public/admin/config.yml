@@ -62,6 +62,23 @@ collections:
         fields:
           - { name: label, label: Назва для показу, widget: string }
           - { name: file, label: Файл, widget: file, media_folder: /public/documents, public_folder: /documents }
+      - name: topics
+        label: Теми
+        widget: select
+        multiple: true
+        required: false
+        hint: Публікація сама з'явиться в списку «Події» на обраних сторінках — додавати посилання вручну не потрібно.
+        options:
+          - { label: Атестація, value: atestatsiia }
+          - { label: Дошкілля, value: doshkillia }
+          - { label: Інклюзивна освіта, value: inkliuzyvna-osvita }
+          - { label: Початкова школа, value: pochatkova-shkola }
+          - { label: Сертифікація педагогічних працівників, value: sertyfikatsiia-pedahohichnykh-pratsivnykiv }
+          - { label: Шкільна бібліотека, value: shkilna-biblioteka }
+          - { label: Соціально-психологічна служба, value: sotsialno-psykholohichna-sluzhba }
+          - { label: Сторінка психолога, value: storinka-psykholoha }
+          - { label: Супервізія, value: superviziia }
+          - { label: Творчі групи, value: tvorchi-hrupy }
       - name: body
         label: Текст новини
         widget: markdown
@@ -148,8 +165,34 @@ collections:
               - { name: title, label: Заголовок розділу, widget: string, hint: 'Наприклад: Події, Документи' }
               - { name: text, label: Вміст розділу, widget: markdown }
 
+          - name: news_by_topic
+            label: Список новин за темою (оновлюється сам)
+            summary: '{{fields.title}}'
+            fields:
+              - { name: title, label: Заголовок, widget: string, required: false, default: Події }
+              - name: topic
+                label: Тема
+                widget: select
+                hint: Сюди самі потраплятимуть усі публікації, яким поставлено цю тему. Вручну нічого додавати не треба.
+                options:
+                  - { label: Атестація, value: atestatsiia }
+                  - { label: Дошкілля, value: doshkillia }
+                  - { label: Інклюзивна освіта, value: inkliuzyvna-osvita }
+                  - { label: Початкова школа, value: pochatkova-shkola }
+                  - { label: Сертифікація педагогічних працівників, value: sertyfikatsiia-pedahohichnykh-pratsivnykiv }
+                  - { label: Шкільна бібліотека, value: shkilna-biblioteka }
+                  - { label: Соціально-психологічна служба, value: sotsialno-psykholohichna-sluzhba }
+                  - { label: Сторінка психолога, value: storinka-psykholoha }
+                  - { label: Супервізія, value: superviziia }
+                  - { label: Творчі групи, value: tvorchi-hrupy }
+              - name: extra
+                label: Додатковий текст під списком
+                widget: markdown
+                required: false
+                hint: Заходи, у яких немає окремої публікації на сайті. Здебільшого це сліди матеріалів, які не перенеслися зі старого сайту.
+
           - name: news_list
-            label: Список новин
+            label: Список новин (обираються вручну)
             summary: '{{fields.title}}'
             fields:
               - { name: title, label: Заголовок, widget: string, required: false, default: Події }

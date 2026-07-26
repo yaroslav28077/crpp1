@@ -3,16 +3,10 @@ title: Інклюзивна освіта
 section: Педагогічні спільноти
 slug: inkliuzyvna-osvita
 blocks:
-  - type: accordion
+  - type: news_by_topic
     title: Події
-    text: |-
-      - [Інклюзія в дії: складаємо «Інклюзивний конструктор» разом!](/novyny/2026-05-18-inkliuziia-v-dii-skladaiemo-inkliuzyvnyi-konstruktor-razom)
-      - [Інклюзія в дії: коли знання стають крилами](/novyny/2025-09-18-inkliuziia-v-dii-koly-znannia-staiut-krylamy)
-      - [Обмін досвідом та професійне зростання: Семінар-практикум для вчителів ОЗ "Вовчицький ліцей В.Ф.Мицика"](/novyny/2025-09-05-obmin-dosvidom-ta-profesiine-zrostannia-seminar-praktykum-dlia-vchyteliv-oz-vovc)
-      - [Інклюзивна освіта сьогодні](/novyny/2024-05-10-inkliuzyvna-osvita-sohodni)
-      - [Лубенському інклюзивно-ресурсному центру - 5 років](/novyny/2024-03-13-lubenskomu-inkliuzyvno-resursnomu-tsentru-5-rokiv)
-      - [Лубенська публічна бібліотека імені Володимира Малика пропонує педагогам та батькам ознайомитися з добіркою книг «Інклюзивне навчання дітей»](/novyny/2022-10-07-lubenska-publichna-biblioteka-imeni-volodymyra-malyka-proponuie-pedahoham-ta-bat)
-      - Інклюзивна освіта: різні можливості - рівні права
+    topic: inkliuzyvna-osvita
+    extra: '- Інклюзивна освіта: різні можливості - рівні права'
   - type: accordion
     title: Документи
     text: |-

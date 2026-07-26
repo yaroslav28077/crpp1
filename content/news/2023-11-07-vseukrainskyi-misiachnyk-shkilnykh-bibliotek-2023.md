@@ -37,6 +37,8 @@ gallery:
   - image: /images/notes/2023/11/mis/32.jpg
   - image: /images/notes/2023/11/mis/28.jpg
   - image: /images/notes/2023/11/mis/29.jpg
+topics:
+  - shkilna-biblioteka
 ---
 
 Протягом 01-31 жовтня 2023 року в закладах загальної середньої освіти Лубенської територіальної громади проведено Всеукраїнський місячник шкільних бібліотек.

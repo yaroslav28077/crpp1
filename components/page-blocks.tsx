@@ -16,10 +16,29 @@ async function renderMarkdown(blocks: PageBlock[]): Promise<Map<number, string>>
     blocks.map(async (block, i) => {
       if (block.type === 'text' || block.type === 'accordion' || block.type === 'notice') {
         html.set(i, await markdownToHtml(block.text))
+      } else if (block.type === 'news_by_topic' && block.extra) {
+        html.set(i, await markdownToHtml(block.extra))
       }
     }),
   )
   return html
+}
+
+function NewsLinks({ items }: { items: { slug: string; title: string; date: string }[] }) {
+  return (
+    <ul className="flex flex-col gap-2">
+      {items.map((n) => (
+        <li key={n.slug} className="flex flex-col sm:flex-row sm:items-baseline sm:gap-3">
+          <time dateTime={n.date} className="text-xs text-muted-foreground shrink-0 sm:w-32">
+            {formatDateUk(n.date)}
+          </time>
+          <Link href={`/novyny/${n.slug}`} className="text-primary hover:underline underline-offset-2">
+            {n.title}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  )
 }
 
 export async function PageBlocks({ blocks }: { blocks: PageBlock[] }) {
@@ -76,19 +95,28 @@ export async function PageBlocks({ blocks }: { blocks: PageBlock[] }) {
             return (
               <section key={i}>
                 {block.title && <h2 className="font-heading text-xl font-bold mb-3">{block.title}</h2>}
-                <ul className="flex flex-col gap-2">
-                  {items.map((n) => (
-                    <li key={n.slug} className="flex flex-col sm:flex-row sm:items-baseline sm:gap-3">
-                      <time dateTime={n.date} className="text-xs text-muted-foreground shrink-0 sm:w-32">
-                        {formatDateUk(n.date)}
-                      </time>
-                      <Link href={`/novyny/${n.slug}`} className="text-primary hover:underline underline-offset-2">
-                        {n.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                <NewsLinks items={items} />
               </section>
+            )
+          }
+
+          case 'news_by_topic': {
+            // Список збирається сам: усі публікації з цією темою, найновіші вгорі.
+            // Лишається згорнутим, як був акордеон, який він замінив.
+            const items = news.filter((n) => n.topics.includes(block.topic))
+            if (items.length === 0 && !block.extra) return null
+            return (
+              <div key={i} className="article-content">
+                <details>
+                  <summary>{block.title || 'Події'}</summary>
+                  <div>
+                    <NewsLinks items={items} />
+                    {block.extra && (
+                      <div className="mt-4 pt-3 border-t border-border" dangerouslySetInnerHTML={{ __html: html.get(i) ?? '' }} />
+                    )}
+                  </div>
+                </details>
+              </div>
             )
           }
 

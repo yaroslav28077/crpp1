@@ -3,19 +3,9 @@ title: Соціально-психологічна служба
 section: Педагогічні спільноти
 slug: sotsialno-psykholohichna-sluzhba
 blocks:
-  - type: accordion
+  - type: news_by_topic
     title: Події
-    text: |-
-      - [Синергія та нові можливості!](/novyny/2026-03-16-synerhiia-ta-novi-mozhlyvosti)
-      - [Підсумки Всеукраїнського конкурсу авторських програм](/novyny/2025-01-27-pidsumky-vseukrainskoho-konkursu-avtorskykh-prohram)
-      - [Удосконалюємо професійні компетентності](/novyny/2024-10-03-udoskonaliuiemo-profesiini-kompetentnosti)
-      - [Захист прав дітей. Підтримка і допомога](/novyny/2024-09-16-zakhyst-prav-ditei-pidtrymka-i-dopomoha)
-      - [Удосконалюємося разом](/novyny/2024-03-06-udoskonaliuiemosia-razom)
-      - [Співпраця з громадськими організаціями](/novyny/2023-10-18-spivpratsia-z-hromadskymy-orhanizatsiiamy)
-      - [Психосоціальна підтримка дітей](/novyny/2023-04-11-psykhosotsialna-pidtrymka-ditei)
-      - [Засідання педагогічної спільноти практичних психологів](/novyny/2023-03-20-zasidannia-pedahohichnoi-spilnoty-praktychnykh-psykholohiv)
-      - [Навчальний тренінг для педагогів громади](/novyny/2022-12-15-navchalnyi-treninh-dlia-pedahohiv-hromady)
-      - [Продовжуємо знайомитися з досвідом роботи](/novyny/2022-11-16-prodovzhuiemo-znaiomytysia-z-dosvidom-roboty)
+    topic: sotsialno-psykholohichna-sluzhba
   - type: accordion
     title: Документи
     text: |-

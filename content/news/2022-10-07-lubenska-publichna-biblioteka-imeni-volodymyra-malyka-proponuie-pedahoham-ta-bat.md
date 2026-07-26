@@ -5,6 +5,8 @@ description: Добірка книг «Інклюзивне навчання д�
 tags:
   - Жовтень2022
   - '2022'
+topics:
+  - inkliuzyvna-osvita
 ---
 
 [![Презентація](/images/ico/ppt.png) Добірка книг «Інклюзивне навчання дітей» (презентація)](https://docs.google.com/presentation/d/10nTF07aLiLgUomjFv2W3ynHMmcmRApjR/edit?usp=sharing&ouid=105122741236082304027&rtpof=true&sd=true)

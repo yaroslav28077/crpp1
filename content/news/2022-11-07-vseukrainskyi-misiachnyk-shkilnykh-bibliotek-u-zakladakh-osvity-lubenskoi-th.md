@@ -30,6 +30,8 @@ gallery:
   - image: /images/notes/2022/11/bib/22.jpg
   - image: /images/notes/2022/11/bib/23.jpg
   - image: /images/notes/2022/11/bib/24.jpg
+topics:
+  - shkilna-biblioteka
 ---
 
 Сьогодення ставить перед бібліотечними працівниками важливе і невідкладне завдання – виховати свідомого громадянина, патріота рідної землі, захисника Батьківщини. 

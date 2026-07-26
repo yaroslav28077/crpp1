@@ -8,6 +8,8 @@ tags:
 gallery:
   - image: /images/notes/2025/03/nbf/01.jpg
   - image: /images/notes/2025/03/nbf/02.jpg
+topics:
+  - shkilna-biblioteka
 ---
 
 03 березня 2025 року в онлайн форматі відбулася робоча нарада шкільних бібліотекарів закладів загальної середньої освіти Лубенської громади.

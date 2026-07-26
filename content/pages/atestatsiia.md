@@ -9,9 +9,9 @@ blocks:
       Педагогічні працівники закладів освіти Лубенської ТГ, які атестуються у 2025-2026 навчальному році, можуть подавати атестаційні матеріали в електронному форматі на адресу: lubny.cprpp@ukr.net
 
       *Атестаційна комісія ІІ рівня*
-  - type: accordion
+  - type: news_by_topic
     title: Події
-    text: '- [Атестація-2024 на завершальному етапі](/novyny/2024-04-16-atestatsiia-2024-na-zavershalnomu-etapi)'
+    topic: atestatsiia
   - type: accordion
     title: Документи
     text: |-

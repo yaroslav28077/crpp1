@@ -9,6 +9,9 @@ gallery:
   - image: /images/notes/2025/02/tvo/01.jpg
   - image: /images/notes/2025/02/tvo/02.jpg
   - image: /images/notes/2025/02/tvo/03.jpg
+topics:
+  - shkilna-biblioteka
+  - tvorchi-hrupy
 ---
 
 5 лютого 2025 р. у бібліотеці Гімназії імені Героя України Віри Роїк  відбулося засідання творчої групи шкільних бібліотекарів з теми: "Новітні технології у роботі шкільних бібліотеки"

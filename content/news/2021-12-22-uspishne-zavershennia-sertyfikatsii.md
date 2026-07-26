@@ -9,6 +9,9 @@ gallery:
   - image: /images/notes/2021/12/kalayda/01.jpg
   - image: /images/notes/2021/12/kalayda/02.jpg
   - image: /images/notes/2021/12/kalayda/03.jpg
+topics:
+  - pochatkova-shkola
+  - sertyfikatsiia-pedahohichnykh-pratsivnykiv
 ---
 
 Виявленню й заохоченню вчителів із високим рівнем педагогічної майстерності, які володіють методиками компетентнісного навчання й новими освітніми технологіями, значною мірою сприяє сертифікація педагогічних працівників. 

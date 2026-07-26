@@ -11,6 +11,8 @@ gallery:
   - image: /images/notes/2023/10/psy/03.jpg
   - image: /images/notes/2023/10/psy/04.jpg
   - image: /images/notes/2023/10/psy/05.jpg
+topics:
+  - storinka-psykholoha
 ---
 
 Війна в Україні стала стресом для усіх учасників освітнього процесу. 

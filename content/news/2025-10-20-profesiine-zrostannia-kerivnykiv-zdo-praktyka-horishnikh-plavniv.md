@@ -14,6 +14,8 @@ gallery:
   - image: /images/notes/2025/10/plav/06.jpg
   - image: /images/notes/2025/10/plav/07.jpg
   - image: /images/notes/2025/10/plav/08.jpg
+topics:
+  - doshkillia
 ---
 
 17 жовтня 2025 року відбувся виїзний семінар директорів закладів дошкільної освіти у місті Горішні Плавні. 

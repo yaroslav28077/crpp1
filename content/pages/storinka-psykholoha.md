@@ -3,19 +3,9 @@ title: Сторінка психолога
 section: Діяльність Центру
 slug: storinka-psykholoha
 blocks:
-  - type: accordion
+  - type: news_by_topic
     title: Події
-    text: |-
-      - [Цикл тренінгів «Mental Trek» для педагогів Лубенської громади](/novyny/2026-04-15-tsykl-treninhiv-mental-trek-dlia-pedahohiv-lubenskoi-hromady)
-      - [Всеукраїнська програма ментального здоров'я «Ти як?» в дії](/novyny/2024-03-19-vseukrainska-prohrama-mentalnoho-zdorovia-ty-iak-v-dii)
-      - [Техніки швидкої стабілізації](/novyny/2024-03-14-tekhniky-shvydkoi-stabilizatsii)
-      - [Удосконалюємося разом](/novyny/2024-03-06-udoskonaliuiemosia-razom)
-      - [Профілактика емоційного вигорання](/novyny/2023-11-23-profilaktyka-emotsiinoho-vyhorannia)
-      - [Особливості надання першої психологічної допомоги](/novyny/2023-10-12-osoblyvosti-nadannia-pershoi-psykholohichnoi-dopomohy)
-      - [Новий масштабний проєкт «Зупинка: Я»](/novyny/2023-09-06-novyi-masshtabnyi-proiekt-zupynka-ia)
-      - [Навчання працівників психологічної служби](/novyny/2023-05-25-navchannia-pratsivnykiv-psykholohichnoi-sluzhby)
-      - [Вебінар для працівників психологічної служби](/novyny/2022-05-12-vebinar-dlia-pratsivnykiv-psykholohichnoi-sluzhby)
-      - [Навчання практичних психологів](/novyny/2022-01-27-navchannia-praktychnykh-psykholohiv)
+    topic: storinka-psykholoha
   - type: accordion
     title: Документи
     text: |-

@@ -23,6 +23,12 @@ export interface NewsItem {
   description?: string
   cover?: string
   tags: string[]
+  /**
+   * Теми, до яких належить публікація. Збігаються з адресами сторінок
+   * спільнот (doshkillia, shkilna-biblioteka…): за ними сторінки самі
+   * збирають свої списки «Події».
+   */
+  topics: string[]
   gallery: GalleryItem[]
   attachments: AttachmentItem[]
   body: string
@@ -48,6 +54,13 @@ export type PageBlock =
   | { type: "accordion"; title: string; text: string }
   /** Список новин: редактор обирає публікації зі списку, а не вписує адреси */
   | { type: "news_list"; title?: string; items: string[] }
+  /**
+   * Список новин, що збирається сам за темою. Досі такі списки вели вручну
+   * і систематично забували поповнювати. `extra` — сліди матеріалів, які не
+   * перенеслися зі старого сайту: вони лишилися без посилань, тож
+   * зберігаються під списком як текст.
+   */
+  | { type: "news_by_topic"; title?: string; topic: string; extra?: string }
   /** Список документів із посиланнями */
   | { type: "documents"; title?: string; items: { label: string; url: string }[] }
   /** Фотогалерея */
@@ -135,6 +148,7 @@ export function getAllNews(): NewsItem[] {
       description: data.description ? String(data.description) : undefined,
       cover: data.cover ? String(data.cover) : gallery[0]?.image,
       tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
+      topics: Array.isArray(data.topics) ? data.topics.map(String) : [],
       gallery,
       attachments: Array.isArray(data.attachments) ? data.attachments : [],
       body: content,

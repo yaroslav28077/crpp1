@@ -13,6 +13,8 @@ gallery:
   - image: /images/notes/2025/09/ink/05.jpg
   - image: /images/notes/2025/09/ink/06.jpg
   - image: /images/notes/2025/09/ink/07.jpg
+topics:
+  - inkliuzyvna-osvita
 ---
 
 16 вересня 2025 року став особливим днем для педагогів Першої гімназії ім. Матвія Номиса, адже він був присвячений найважливішій темі сучасної освіти — інклюзії.

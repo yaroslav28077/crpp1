@@ -3,16 +3,12 @@ title: Творчі групи
 section: Педагогічні спільноти
 slug: tvorchi-hrupy
 blocks:
-  - type: accordion
+  - type: news_by_topic
     title: Події
-    text: |-
-      - [Новітні технології у роботі шкільних бібліотек закладів освіти](/novyny/2025-02-24-novitni-tekhnolohii-u-roboti-shkilnykh-bibliotek-zakladiv-osvity)
+    topic: tvorchi-hrupy
+    extra: |-
       - [Методичний посібник для вчителів початкових класів «Формування математичних компетентностей молодших школярів на основі діяльнісного підходу»](https://docs.google.com/document/d/17_nay2oaQ4g_m9pxaaZT-xPtuDulWR9p/edit?usp=sharing&ouid=116379051625942282643&rtpof=true&sd=true)
-      - [Засідання творчої групи вчителів початкових класів](/novyny/2024-03-28-zasidannia-tvorchoi-hrupy-vchyteliv-pochatkovykh-klasiv)
-      - [Діяльнісний підхід як основа організації освітнього процесу](/novyny/2024-02-16-diialnisnyi-pidkhid-iak-osnova-orhanizatsii-osvitnoho-protsesu)
-      - [Тренінги від творчих філологинь Лубенщини](/novyny/2024-01-25-treninhy-vid-tvorchykh-filolohyn-lubenshchyny)
       - Напрацювання членів творчої групи вчителів математики
-      - [Чергове засідання творчої групи](/novyny/2021-12-16-cherhove-zasidannia-tvorchoi-hrupy)
       - Засідання творчої групи вчителів математики
       - [Положення про творчу групу педагогічних працівників](https://drive.google.com/file/d/1d15JjLrkT-ghFRho7x6dUD7Ud8KwUNEo/view?usp=sharing)
   - type: accordion

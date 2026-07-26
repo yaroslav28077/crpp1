@@ -3,20 +3,12 @@ title: Сертифікація педагогічних працівників
 section: Консалтингові послуги
 slug: sertyfikatsiia-pedahohichnykh-pratsivnykiv
 blocks:
-  - type: accordion
+  - type: news_by_topic
     title: Події
-    text: |-
-      - [Сертифікація - 2024](/novyny/2024-12-16-sertyfikatsiia-2024)
-      - [Сертифікований учитель - це знак якості освіти](/novyny/2023-12-19-sertyfikovanyi-uchytel-tse-znak-iakosti-osvity)
-      - [Вітаємо з успішним проходженням сертифікації - 2023!](/novyny/2023-08-21-vitaiemo-z-uspishnym-prokhodzhenniam-sertyfikatsii-2023)
-      - [Підсумки сертифікації-2022](/novyny/2023-01-20-pidsumky-sertyfikatsii-2022)
-      - [Вітаємо з успішним проходженням сертифікації - 2022!](/novyny/2022-12-15-vitaiemo-z-uspishnym-prokhodzhenniam-sertyfikatsii-2022)
-      - [Педагогічний івент «Навчати і навчатися: як зростати вчителю»](/novyny/2022-10-07-pedahohichnyi-ivent-navchaty-i-navchatysia-iak-zrostaty-vchyteliu)
-      - [Увага! Розпочато реєстрацію вчителів для проходження сертифікації 2022 року](/novyny/2022-08-01-uvaha-rozpochato-reiestratsiiu-vchyteliv-dlia-prokhodzhennia-sertyfikatsii-2022)
-      - [Сертифікація вчителів початкової школи](/novyny/2022-08-01-sertyfikatsiia-vchyteliv-pochatkovoi-shkoly)
+    topic: sertyfikatsiia-pedahohichnykh-pratsivnykiv
+    extra: |-
       - Третій етап сертифікації
       - Сертифікація-2020
-      - [Успішне завершення сертифікації](/novyny/2021-12-22-uspishne-zavershennia-sertyfikatsii)
   - type: accordion
     title: Документи
     text: |-
