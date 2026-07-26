@@ -25,6 +25,33 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // Архів новин переїхав із query-параметрів на статичні шляхи.
+      // Найспецифічніше правило має йти першим.
+      {
+        source: '/novyny',
+        has: [
+          { type: 'query', key: 'rik', value: '(?<rik>\\d{4})' },
+          { type: 'query', key: 'storinka', value: '(?<storinka>\\d+)' },
+        ],
+        destination: '/novyny/rik/:rik/storinka/:storinka',
+        permanent: true,
+      },
+      {
+        source: '/novyny',
+        has: [{ type: 'query', key: 'rik', value: '(?<rik>\\d{4})' }],
+        destination: '/novyny/rik/:rik',
+        permanent: true,
+      },
+      {
+        source: '/novyny',
+        has: [{ type: 'query', key: 'storinka', value: '(?<storinka>\\d+)' }],
+        destination: '/novyny/storinka/:storinka',
+        permanent: true,
+      },
+      // Голі префікси архіву без значення — на початок стрічки
+      { source: '/novyny/rik', destination: '/novyny', permanent: false },
+      { source: '/novyny/storinka', destination: '/novyny', permanent: false },
+
       // Точкові переходи зі старих адрес /notes/<translit>.html.
       // Генерується scripts/generate-redirects.mjs із заголовків контенту.
       ...legacy.rules.map((r) => ({

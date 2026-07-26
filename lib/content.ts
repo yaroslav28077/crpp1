@@ -31,7 +31,14 @@ export interface NewsItem {
 
 export interface PageItem {
   slug: string
+  /** Короткий ярлик — те, що показує меню */
   title: string
+  /**
+   * Повна офіційна назва, коли вона довша за ярлик меню (наприклад
+   * «Стратегія розвитку» -> «Стратегія розвитку Комунальної установи …»).
+   * Її пише міграція, коли заголовок тіддлера відрізнявся від пункту меню.
+   */
+  full_title?: string
   section?: string
   body: string
   gallery: GalleryItem[]
@@ -129,6 +136,7 @@ export function getAllPages(): PageItem[] {
   pagesCache = readMd("pages").map(({ file, data, content }) => ({
     slug: String(data.slug || file.replace(/\.md$/, "")),
     title: String(data.title || file),
+    full_title: data.full_title ? String(data.full_title) : undefined,
     section: data.section ? String(data.section) : undefined,
     body: content,
     gallery: Array.isArray(data.gallery) ? data.gallery.filter((g: GalleryItem) => g?.image) : [],

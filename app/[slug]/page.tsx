@@ -14,8 +14,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const page = getPageBySlug(slug)
   if (!page) return {}
   return {
+    // У <title> лишається короткий ярлик: повна назва не влазить у вкладку і видачу
     title: page.seo_title || page.title,
-    description: page.seo_description || undefined,
+    description: page.seo_description || page.full_title || undefined,
   }
 }
 
@@ -34,7 +35,10 @@ export default async function StaticPage({ params }: { params: Promise<{ slug: s
             {page.section}
           </p>
         )}
-        <h1 className="font-heading text-3xl md:text-4xl font-bold text-balance">{page.title}</h1>
+        {/* Меню показує короткий ярлик, а на самій сторінці доречна повна офіційна назва */}
+        <h1 className="font-heading text-3xl md:text-4xl font-bold text-balance">
+          {page.full_title || page.title}
+        </h1>
       </header>
 
       <div className="article-content" dangerouslySetInnerHTML={{ __html: html }} />
