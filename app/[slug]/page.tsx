@@ -4,6 +4,7 @@ import { Paperclip } from 'lucide-react'
 import { getAllPages, getPageBySlug } from '@/lib/content'
 import { markdownToHtml } from '@/lib/markdown'
 import { PhotoGallery } from '@/components/photo-gallery'
+import { PageBlocks } from '@/components/page-blocks'
 
 export function generateStaticParams() {
   return getAllPages().map((p) => ({ slug: p.slug }))
@@ -25,7 +26,8 @@ export default async function StaticPage({ params }: { params: Promise<{ slug: s
   const page = getPageBySlug(slug)
   if (!page) notFound()
 
-  const html = await markdownToHtml(page.body)
+  // Сторінки переведено на блоки; body лишається для сумісності зі старим форматом
+  const legacyHtml = page.blocks.length === 0 ? await markdownToHtml(page.body) : null
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
@@ -41,7 +43,11 @@ export default async function StaticPage({ params }: { params: Promise<{ slug: s
         </h1>
       </header>
 
-      <div className="article-content" dangerouslySetInnerHTML={{ __html: html }} />
+      {legacyHtml !== null ? (
+        <div className="article-content" dangerouslySetInnerHTML={{ __html: legacyHtml }} />
+      ) : (
+        <PageBlocks blocks={page.blocks} />
+      )}
 
       {page.attachments.length > 0 && (
         <section className="mt-8 rounded-xl border border-border bg-card p-5" aria-label="Прикріплені файли">

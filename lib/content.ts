@@ -2,6 +2,7 @@ import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
 import * as yaml from "js-yaml"
+import { slugify } from "./slug"
 
 const CONTENT_DIR = path.join(process.cwd(), "content")
 
@@ -29,6 +30,29 @@ export interface NewsItem {
   seo_description?: string
 }
 
+/**
+ * Блоки сторінки. Замінили суцільний Markdown із сирими <details>: тепер
+ * кожен розділ — окреме поле в адмінці, яке можна перейменувати, переставити
+ * чи видалити, не знаючи верстки.
+ *
+ * Усередині «Тексту» та «Розділу» лишається Markdown: там трапляються
+ * таблиці й вкладені списки, для яких окремих полів не напасешся.
+ * Для щоденних завдань є структуровані блоки — новини й документи.
+ */
+export type PageBlock =
+  /** Виділена рамка-оголошення вгорі сторінки */
+  | { type: "notice"; heading: string; text: string }
+  /** Довільний текст */
+  | { type: "text"; text: string }
+  /** Розгортуваний розділ («Події», «Документи» тощо) */
+  | { type: "accordion"; title: string; text: string }
+  /** Список новин: редактор обирає публікації зі списку, а не вписує адреси */
+  | { type: "news_list"; title?: string; items: string[] }
+  /** Список документів із посиланнями */
+  | { type: "documents"; title?: string; items: { label: string; url: string }[] }
+  /** Фотогалерея */
+  | { type: "gallery"; title?: string; images: GalleryItem[] }
+
 export interface PageItem {
   slug: string
   /** Короткий ярлик — те, що показує меню */
@@ -40,7 +64,9 @@ export interface PageItem {
    */
   full_title?: string
   section?: string
+  /** Тіло старого формату. Лишається для сумісності; нові сторінки — у blocks */
   body: string
+  blocks: PageBlock[]
   gallery: GalleryItem[]
   attachments: AttachmentItem[]
   seo_title?: string
@@ -102,7 +128,8 @@ export function getAllNews(): NewsItem[] {
   const items = readMd("news").map(({ file, data, content }) => {
     const gallery: GalleryItem[] = Array.isArray(data.gallery) ? data.gallery.filter((g: GalleryItem) => g?.image) : []
     return {
-      slug: file.replace(/\.md$/, ""),
+      // Через slugify, бо CMS називає нові файли кирилицею — див. lib/slug.ts
+      slug: slugify(file.replace(/\.md$/, "")),
       title: String(data.title || file),
       date: data.date ? new Date(data.date).toISOString() : "1970-01-01T00:00:00.000Z",
       description: data.description ? String(data.description) : undefined,
@@ -134,11 +161,12 @@ let pagesCache: PageItem[] | null = null
 export function getAllPages(): PageItem[] {
   if (isProd && pagesCache) return pagesCache
   pagesCache = readMd("pages").map(({ file, data, content }) => ({
-    slug: String(data.slug || file.replace(/\.md$/, "")),
+    slug: slugify(String(data.slug || file.replace(/\.md$/, ""))),
     title: String(data.title || file),
     full_title: data.full_title ? String(data.full_title) : undefined,
     section: data.section ? String(data.section) : undefined,
     body: content,
+    blocks: Array.isArray(data.blocks) ? (data.blocks as PageBlock[]).filter((b) => b?.type) : [],
     gallery: Array.isArray(data.gallery) ? data.gallery.filter((g: GalleryItem) => g?.image) : [],
     attachments: Array.isArray(data.attachments) ? data.attachments : [],
     seo_title: data.seo_title,
