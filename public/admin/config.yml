@@ -11,6 +11,9 @@ publish_mode: editorial_workflow
 
 locale: uk
 
+# Медіатека Decap плоска — показує лише файли безпосередньо в цій теці.
+# Ширший корінь (public/images) дав би порожній список, бо всі 1937 фото
+# лежать у вкладених теках, а нові завантаження засмічували б корінь.
 media_folder: public/images/uploads
 public_folder: /images/uploads
 
@@ -26,6 +29,8 @@ collections:
     sortable_fields: [date, title]
     summary: '{{date | date("DD.MM.YYYY")}} — {{title}}'
     fields:
+      # Порядок полів — це порядок, у якому їх заповнюють: спочатку про що
+      # новина, потім сам текст, потім фото. Службове — наприкінці, згорнуте.
       - { name: title, label: Заголовок, widget: string }
       - name: date
         label: Дата публікації
@@ -38,35 +43,29 @@ collections:
         date_format: DD.MM.YYYY
         time_format: HH:mm
         hint: Від неї залежить порядок у стрічці та рік в архіві
-      - name: description
-        label: Короткий опис
+      - name: body
+        label: Текст новини
+        widget: markdown
+      - name: author
+        label: Підпис
         widget: text
         required: false
-        hint: 1–2 речення. Показується на картці новини і в результатах пошуку Google. Якщо лишити порожнім — картка буде без опису.
-      - name: cover
-        label: Головне зображення
-        widget: image
-        required: false
-        hint: Показується на картці. Якщо не вибрати — візьметься перше фото з галереї.
+        hint: 'Хто підготував: наприклад «Консультант ЦПРПП Світлана ЛІСНА». Показується під текстом.'
       - name: gallery
         label: Фотогалерея
         widget: list
         required: false
         label_singular: Фото
-        summary: '{{fields.caption}}'
+        summary: '{{fields.image}}'
+        hint: Порядок фото можна змінювати перетягуванням. Підпис не обов'язковий.
         fields:
           - { name: image, label: Зображення, widget: image }
           - { name: caption, label: Підпис, widget: string, required: false }
-      - name: attachments
-        label: Прикріплені файли
-        widget: list
+      - name: cover
+        label: Головне зображення
+        widget: image
         required: false
-        label_singular: Файл
-        summary: '{{fields.label}}'
-        hint: Для файлів, які завантажуєте на сайт. Посилання на Google Диск зручніше вставляти прямо в текст.
-        fields:
-          - { name: label, label: Назва для показу, widget: string }
-          - { name: file, label: Файл, widget: file, media_folder: /public/documents, public_folder: /documents }
+        hint: Показується на картці новини. Якщо не вибрати — візьметься перше фото з галереї.
       - name: topics
         label: Теми
         widget: select
@@ -84,16 +83,23 @@ collections:
           - { label: Сторінка психолога, value: storinka-psykholoha }
           - { label: Супервізія, value: superviziia }
           - { label: Творчі групи, value: tvorchi-hrupy }
-      - name: body
-        label: Текст новини
-        widget: markdown
-      - name: tags
-        label: Теги
+      - name: description
+        label: Короткий опис
+        widget: text
+        required: false
+        collapsed: true
+        hint: Показується на картці новини і в Google. Якщо лишити порожнім — візьмемо перший абзац тексту.
+      - name: attachments
+        label: Прикріплені файли
         widget: list
         required: false
         collapsed: true
-        hint: Службове поле, лишилося після переїзду зі старого сайту. На сайті теги ніде не показуються — можна не заповнювати.
-        field: { name: tag, label: Тег, widget: string }
+        label_singular: Файл
+        summary: '{{fields.label}}'
+        hint: Для файлів, які кладете на сам сайт. Посилання на Google Диск зручніше вставляти прямо в текст.
+        fields:
+          - { name: label, label: Назва для показу, widget: string }
+          - { name: file, label: Файл, widget: file, media_folder: /public/documents, public_folder: /documents }
       - name: seo_title
         label: Заголовок для Google
         widget: string
@@ -106,6 +112,9 @@ collections:
         required: false
         collapsed: true
         hint: Якщо порожньо — використовується короткий опис вище.
+      # Службові мітки зі старого сайту (Березень2024 тощо). Ніде не
+      # показуються, але лишаються у файлі, щоб не зникли при збереженні.
+      - { name: tags, label: Теги, widget: hidden }
 
   # ─────────────── СТОРІНКИ ───────────────
   - name: pages

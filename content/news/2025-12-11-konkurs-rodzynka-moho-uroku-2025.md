@@ -17,6 +17,7 @@ gallery:
   - image: /images/notes/2025/12/rod/11.jpg
   - image: /images/notes/2025/12/rod/12.jpg
   - image: /images/notes/2025/12/rod/13.jpg
+author: В.о. директора ЦПРПП     Оксана ПЕДОРЯКА
 ---
 
 10 грудня 2025 року  освітній простір Лубенської громади вибухнув креативом та натхненням! 
@@ -44,6 +45,3 @@ gallery:
 Вітаємо всіх! Нехай ваші "родзинки" проростають у нові освітні шедеври! 
 
   - [Відеофрагменти "Родзинка мого уроку"](https://drive.google.com/drive/folders/1H_bjYi0aMx1zrB7LEAvblPDDcWou8Ebz?usp=sharing)
-
-| В.о. директора ЦПРПП     Оксана ПЕДОРЯКА |
-| --- |
