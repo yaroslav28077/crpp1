@@ -8,6 +8,11 @@
 //    (registerAsset для них не викликався), а старий сайт уже недоступний,
 //    тому лишається тільки прибрати розмітку, зберігши текст абзацу.
 // 5) " -- " — ASCII-замінник тире з TiddlyWiki; у решті контенту вже "—"
+// 6) "## [](/images/...)" — зображення, вставлені як заголовок із порожнім
+//    посиланням. Рендериться порожній <h2> з порожнім <a>, а саме фото не
+//    показується взагалі: 76 знімків у 25 новинах були невидимі для читача.
+// 7) "~" перед латинською абревіатурою (~STEM, ~YouTube) — у TiddlyWiki так
+//    вимикали автолінкування CamelCase-слів; на сайті це просто зайвий символ
 import fs from "node:fs"
 import path from "node:path"
 
@@ -37,6 +42,8 @@ let bracesFixed = 0
 let descFixed = 0
 let imgFixed = 0
 let dashFixed = 0
+let headingImgFixed = 0
+let tildeFixed = 0
 
 for (const file of walk(CONTENT)) {
   const src = fs.readFileSync(file, "utf8")
@@ -75,6 +82,18 @@ for (const file of walk(CONTENT)) {
     return " — "
   })
 
+  // 6) зображення, загорнуте в заголовок із порожнім посиланням
+  out = out.replace(/^#{1,6}\s+\[\]\((\/images\/[^)]+)\)/gm, (_m, src) => {
+    headingImgFixed++
+    return `![](${src})`
+  })
+
+  // 7) тильда-екран перед латинськими абревіатурами
+  out = out.replace(/~(?=[A-Z][A-Za-z0-9]*[A-Za-z0-9-])/g, () => {
+    tildeFixed++
+    return ""
+  })
+
   if (out !== src) {
     fs.writeFileSync(file, out)
     filesChanged++
@@ -87,3 +106,5 @@ console.log(`{{{ / }}} прибрано: ${bracesFixed}`)
 console.log(`описів перегенеровано: ${descFixed}`)
 console.log(`[>img[...]] прибрано: ${imgFixed}`)
 console.log(`" -- " замінено на тире: ${dashFixed}`)
+console.log(`зображень із заголовка-обгортки визволено: ${headingImgFixed}`)
+console.log(`тильд-екранів прибрано: ${tildeFixed}`)

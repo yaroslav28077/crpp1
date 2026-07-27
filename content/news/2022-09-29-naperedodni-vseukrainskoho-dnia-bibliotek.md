@@ -21,4 +21,4 @@ topics:
 | Консультант ЦПРПП Альона ТАРАНЕЦЬ |
 | --- |
 
-## [](/images/notes/2022/09/bibl.jpg)
+![](/images/notes/2022/09/bibl.jpg)

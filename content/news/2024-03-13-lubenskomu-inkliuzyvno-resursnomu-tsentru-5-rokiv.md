@@ -19,4 +19,4 @@ topics:
 | Директор ІРЦ Наталія МОСКАЛЬОВА |
 | --- |
 
-## [](/images/notes/2024/03/irc5.jpg)
+![](/images/notes/2024/03/irc5.jpg)

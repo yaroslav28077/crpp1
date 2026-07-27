@@ -13,4 +13,4 @@ tags:
 | Директор ЦПРПП Надія СІЧКАР |
 | --- |
 
-## [](/images/notes/2023/02/vern.jpg)
+![](/images/notes/2023/02/vern.jpg)

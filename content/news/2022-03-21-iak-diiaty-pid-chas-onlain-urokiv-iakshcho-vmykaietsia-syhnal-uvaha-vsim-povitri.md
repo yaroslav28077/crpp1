@@ -7,4 +7,4 @@ tags:
   - '2022'
 ---
 
-## [](/images/notes/2022/03/porada.jpg)
+![](/images/notes/2022/03/porada.jpg)

@@ -202,14 +202,42 @@ function deriveDescription(explicit: unknown, body: string, title: string): stri
       .replace(/\s+/g, " ")
       .trim()
     if (clean.length <= 40) continue
+    // Відкидаємо лише абзац, який САМ Є переказом заголовка. Перевіряти ще й
+    // зворотний напрям не можна: типовий український лід («26 квітня 2023 року
+    // відбувся семінар-практикум учителів математики…») містить назву заходу
+    // як підрядок, і його теж викидало — опис брався із середини статті.
     const n = norm(clean)
-    if (normTitle && (normTitle.includes(n) || n.includes(normTitle))) continue
+    if (normTitle && normTitle.includes(n)) continue
     if (clean.length <= 160) return clean
     const cut = clean.slice(0, 159)
     const lastSpace = cut.lastIndexOf(" ")
     return (lastSpace > 80 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:—–\-(«"]+$/, "") + "…"
   }
   return undefined
+}
+
+/**
+ * Розводить однакові адреси.
+ *
+ * Адреса будується транслітерацією назви файлу, тож різні назви можуть дати
+ * однакову: «Атестація» -> atestatsiia так само, як наявна atestatsiia.md.
+ * Без цього друга сторінка мовчки зникала: Next пререндерив лише один
+ * маршрут, getPageBySlug брав перший збіг, а редактор бачив «опубліковано»
+ * і стару сторінку за своєю адресою. Ні помилки, ні попередження.
+ */
+function ensureUniqueSlugs<T extends { slug: string; title: string }>(items: T[], where: string): T[] {
+  const seen = new Map<string, number>()
+  return items.map((item) => {
+    const count = seen.get(item.slug) ?? 0
+    seen.set(item.slug, count + 1)
+    if (count === 0) return item
+    const unique = `${item.slug}-${count + 1}`
+    console.warn(
+      `[content] Збіг адрес у ${where}: «${item.title}» дає ту саму адресу /${item.slug}, ` +
+        `що й попередня сторінка. Ця отримала /${unique}. Перейменуйте одну зі сторінок.`,
+    )
+    return { ...item, slug: unique }
+  })
 }
 
 // Кешуємо лише в продакшні: у дев-режимі редактор має бачити нові файли одразу
@@ -239,8 +267,8 @@ export function getAllNews(): NewsItem[] {
     }
   })
   items.sort((a, b) => (a.date < b.date ? 1 : -1))
-  newsCache = items
-  return items
+  newsCache = ensureUniqueSlugs(items, "content/news")
+  return newsCache
 }
 
 export function getNewsBySlug(slug: string): NewsItem | undefined {
@@ -268,6 +296,7 @@ export function getAllPages(): PageItem[] {
     seo_title: data.seo_title,
     seo_description: data.seo_description,
   }))
+  pagesCache = ensureUniqueSlugs(pagesCache, "content/pages")
   return pagesCache
 }
 

@@ -7,4 +7,4 @@ tags:
   - '2023'
 ---
 
-## [](/images/notes/2023/09/jarm.jpg)
+![](/images/notes/2023/09/jarm.jpg)
